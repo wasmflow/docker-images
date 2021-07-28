@@ -1,0 +1,46 @@
+FROM ubuntu:20.04
+
+# deps
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --assume-yes --no-install-recommends \
+    autoconf \
+    automake \
+    binutils \
+    ca-certificates \
+    clang \
+    cmake \
+    curl \
+    file \
+    g++ \
+    gcc \
+    git \
+    libc6-dev \
+    libgmp-dev \
+    libmpc-dev \
+    libmpfr-dev \
+    libssl-dev \
+    libtool \
+    libxml2-dev \
+    m4 \
+    make \
+    patch \
+    pkg-config \
+    python \
+    xz-utils \
+    zlib1g-dev
+
+## osxcross
+RUN git clone https://github.com/tpoechtrager/osxcross
+WORKDIR /osxcross
+RUN cd tarballs && curl -LO https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.3.sdk.tar.xz
+RUN UNATTENDED=yes OSX_VERSION_MIN=11.0 ./build.sh
+ENV PATH="/osxcross/target/bin:${PATH}"
+
+ENV CARGO_TARGET_AARCH64_APPLE_DARWIN_LINKER=aarch64-apple-darwin20.4-clang \
+    CARGO_TARGET_AARCH64_APPLE_DARWIN_AR=aarch64-apple-darwin20.4-ar \
+    CC=oa64-clang \
+    CCX=oa64-clang++
+# install rustup
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain nightly --default-host aarch64-apple-darwin
+ENV PATH="/root/.cargo/bin:${PATH}"
+RUN set RUSTC=$(rustup which rustc)

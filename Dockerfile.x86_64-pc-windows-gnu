@@ -1,0 +1,36 @@
+FROM rustembedded/cross:x86_64-pc-windows-gnu
+
+# deps
+RUN apt-get update && \
+  apt-get install -y --no-install-recommends \
+    autoconf \
+    automake \
+    binutils \
+    ca-certificates \
+    clang \
+    cmake \
+    curl \
+    file \
+    g++ \
+    gcc \
+    git \
+    libc6-dev \
+    libgmp-dev \
+    libmpc-dev \
+    libmpfr-dev \
+    libssl-dev \
+    libtool \
+    libxml2-dev \
+    m4 \
+    make \
+    patch \
+    pkg-config \
+    xz-utils \
+    zlib1g-dev
+
+# install rustup
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+RUN rustup target add x86_64-pc-windows-gnu
+
+RUN apt-get install -y clang libclang-dev llvm-dev
