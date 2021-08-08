@@ -1,4 +1,4 @@
-FROM rustembedded/cross:x86_64-pc-windows-gnu
+FROM vinodotdev/cross:x86_64-pc-windows-gnu-base
 
 # deps
 RUN apt-get update && \
