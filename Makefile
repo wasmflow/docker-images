@@ -11,11 +11,23 @@ CROSS_VERSION := 0.2.1
 IMAGE         := vinodotdev/cross
 RELEASE       ?= false
 
+BASE_IMAGES := armv7-unknown-linux-gnueabihf-base aarch64-unknown-linux-gnu-base x86_64-pc-windows-gnu-base
+
 ##@ Building
 
-.PHONY: all Dockerfile.*
+.PHONY: all $(BASE_IMAGES) Dockerfile.*
 
-build: $(wildcard Dockerfile.*) ## Build/push all images
+all: build
+
+build: $(BASE_IMAGES) $(wildcard Dockerfile.*) ## Build/push all images
+
+armv7-unknown-linux-gnueabihf-base: ## Build base image for armv7-unknown-linux-gnueabihf
+	@cd docker; \
+		docker build . -f Dockerfile.armv7-unknown-linux-gnueabihf  --build-arg VERSION=$(CROSS_VERSION) -t $(IMAGE):$@
+	@cd ..
+ifeq ($(RELEASE),true)
+	docker push $(IMAGE):$@
+endif
 
 aarch64-unknown-linux-gnu-base: ## Build base image for aarch64-unknown-linux-gnu
 	@cd docker; \
