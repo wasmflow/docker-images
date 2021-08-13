@@ -99,7 +99,7 @@ EOF
  threads := posix win32
 
  # Hardening on the host, none on the target
-@@ -216,6 +216,10 @@
+@@ -220,6 +220,10 @@
  # Enable libatomic
  CONFFLAGS += \
  	--enable-libatomic
@@ -107,9 +107,24 @@ EOF
 +CONFFLAGS += \
 +	--disable-sjlj-exceptions \
 +	--with-dwarf2
- # Enable experimental::filesystem
+ # Enable experimental::filesystem and std::filesystem
  CONFFLAGS += \
  	--enable-libstdcxx-filesystem-ts=yes
+EOF
+
+    # Replace the sjlj dlls with dw2 dlls.
+    patch -p0 <<'EOF'
+--- debian/gcc-mingw-w64-i686.install.in.orig  2021-08-11 16:35:12.417943348 +0000
++++ debian/gcc-mingw-w64-i686.install.in       2021-08-11 16:35:20.718036167 +0000
+@@ -20,7 +20,7 @@
+ usr/lib/gcc/i686-w64-mingw32/@@VERSION@@*/libgcc.a
+ usr/lib/gcc/i686-w64-mingw32/@@VERSION@@*/libgcc_eh.a
+ usr/lib/gcc/i686-w64-mingw32/@@VERSION@@*/libgcc_s.a
+-usr/lib/gcc/i686-w64-mingw32/@@VERSION@@*/libgcc_s_sjlj-1.dll
++usr/lib/gcc/i686-w64-mingw32/@@VERSION@@*/libgcc_s_dw2-1.dll
+ usr/lib/gcc/i686-w64-mingw32/@@VERSION@@*/libgcov.a
+ usr/lib/gcc/i686-w64-mingw32/@@VERSION@@*/libgomp.a
+ usr/lib/gcc/i686-w64-mingw32/@@VERSION@@*/libgomp-1.dll
 EOF
 
     # Build the modified mingw packages
