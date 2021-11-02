@@ -27,8 +27,6 @@ ENV CROSS_DOCKER_IN_DOCKER=true
 
 RUN cargo install --git https://github.com/vinodotdev/cross.git
 
-# RUN touch /var/run/docker.sock
-
-# RUN chown root:docker /var/run/docker.sock
-
-# RUN usermod -a -G docker circleci
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    lld
