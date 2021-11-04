@@ -1,32 +1,24 @@
 FROM rust:1.56.0
 
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    nodejs npm curl gnupg lsb-release
-
-RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-
-RUN echo \
-  "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] \
-  https://download.docker.com/linux/debian \
-  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    docker-ce docker-ce-cli containerd.io
-
-RUN rustup component add rustfmt
-
-RUN rustup target add wasm32-unknown-unknown wasm32-wasi
-
-RUN npm install -g @vinodotdev/codegen@2.0.0
-
-RUN cargo install tomlq cargo-deny
+ARG user=vino
+ARG group=vino
+ARG uid=1000
+ARG gid=1000
 
 ENV CROSS_DOCKER_IN_DOCKER=true
+ENV RUSTC_WRAPPER=/home/vino/.cargo/bin/sccache
 
-RUN cargo install --git https://github.com/vinodotdev/cross.git
+RUN useradd ${user} -m --shell $(which bash)
 
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    lld
+COPY --chown=${user}:${group} sccache ${RUSTC_WRAPPER}
+
+COPY linux-base.sh /tmp
+RUN /tmp/linux-base.sh
+
+USER ${user}:${group}
+
+COPY --chown=${user}:${group} nvm /home/${user}/.nvm
+
+COPY vino-base.sh /tmp
+RUN /tmp/vino-base.sh
+

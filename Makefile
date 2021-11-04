@@ -34,7 +34,7 @@ cross:
 
 .PHONY: Dockerfile.*
 Dockerfile.*: cross ## Build specific image
-	@docker build . -f $@ -t $(ORG)/$(@:Dockerfile.%=%)
+	@docker build docker -f $@ -t $(ORG)/$(@:Dockerfile.%=%)
 ifeq ($(RELEASE),true)
 ifeq ($(GIT_STATUS),clean)
 	docker tag $(ORG)/$(@:Dockerfile.%=%) $(ORG)/$(@:Dockerfile.%=%):latest
