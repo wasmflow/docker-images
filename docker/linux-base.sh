@@ -42,4 +42,5 @@ get_docker_key() {
 
 install_deps
 
+
 rm -rf /var/lib/apt/lists/*

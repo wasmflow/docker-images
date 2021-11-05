@@ -10,15 +10,23 @@ install_rust_deps() {
 }
 
 install_node_deps() {
+  nvm install 16
+
+  npm install -g @vinodotdev/codegen@2.0.0
+}
+
+setup_rcfiles() {
+  echo '[ -s "$HOME/.bashrc" ] && . "$HOME/.bashrc"' >> "$HOME/.bash_profile"
+
+  echo 'PATH=/usr/local/cargo/bin:$PATH' >> "$HOME/.bashrc"
   echo 'export NVM_DIR="$HOME/.nvm"' >> "$HOME/.bashrc"
   echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> "$HOME/.bashrc"
   echo '[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion" # This loads nvm bash_completion' >> "$HOME/.bashrc"
 
-
   source $HOME/.nvm/nvm.sh
-  nvm install 16
-  npm install -g @vinodotdev/codegen@2.0.0
 }
+
+setup_rcfiles
 
 install_node_deps
 
