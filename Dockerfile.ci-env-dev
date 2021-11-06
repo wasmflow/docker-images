@@ -7,6 +7,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
   git \
   less \
   vim \
+  zip \
   && rm -rf
 
 ARG user=vino
@@ -18,13 +19,15 @@ RUN useradd ${user} -m --shell $(which bash)
 
 RUN mkdir -p /home/circleci && chmod a+rwx /home/circleci
 
-USER ${user}:${group}
-
 COPY --chown=${user}:${group} dev-common /home/${user}/dev-common
+
+RUN ln -s /home/${user}/dev-common/bin/* /usr/local/bin
+
+USER ${user}:${group}
 
 COPY dev-env.sh /tmp
 RUN /tmp/dev-env.sh
 
 COPY --chown=${user}:${group} nvm /home/${user}/.nvm
-COPY --chown=${user}:${group} bin/* /home/${user}/dev-common/bin/
+COPY bin/* /usr/local/bin/
 
