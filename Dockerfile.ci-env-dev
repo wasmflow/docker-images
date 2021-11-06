@@ -16,6 +16,8 @@ ARG gid=1000
 
 RUN useradd ${user} -m --shell $(which bash)
 
+RUN mkdir -p /home/circleci && chmod a+rwx /home/circleci
+
 USER ${user}:${group}
 
 COPY --chown=${user}:${group} dev-common /home/${user}/dev-common
@@ -25,3 +27,4 @@ RUN /tmp/dev-env.sh
 
 COPY --chown=${user}:${group} nvm /home/${user}/.nvm
 COPY --chown=${user}:${group} bin/* /home/${user}/dev-common/bin/
+
