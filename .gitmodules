@@ -4,3 +4,6 @@
 [submodule "docker/nvm"]
 	path = docker/nvm
 	url = git@github.com:nvm-sh/nvm.git
+[submodule "docker/dev-common/bash-infinity"]
+	path = docker/dev-common/bash-infinity
+	url = https://github.com/niieani/bash-oo-framework.git
