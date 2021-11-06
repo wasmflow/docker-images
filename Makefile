@@ -10,7 +10,7 @@ MAKEFLAGS += --no-builtin-rules
 ORG := vinodotdev
 RELEASE ?= false
 CROSS_VERSION := 0.2.1
-IMAGE:=$(ORG)/cross
+CROSS_IMAGE:=$(ORG)/cross
 
 ARCHITECTURES:=x86_64-unknown-linux-gnu \
 		i686-unknown-linux-gnu \
@@ -49,9 +49,9 @@ endif
 .PHONY: $(ARCHITECTURES)
 $(ARCHITECTURES): ## Build cross image for specific architecture (see `make list`)
 	@docker build cross/docker -f cross/docker/Dockerfile.$@ --build-arg VERSION=$(CROSS_VERSION) \
-		-t $(IMAGE):$@
+		-t $(CROSS_IMAGE):$@
 ifeq ($(RELEASE),true)
-		docker push $(IMAGE):$@
+		docker push $(CROSS_IMAGE):$@
 endif
 
 ##@ Helpers

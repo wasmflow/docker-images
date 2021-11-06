@@ -1,0 +1,54 @@
+#!/bin/env bash
+
+DEV_COMMON="${DEV_COMMON:=$HOME/dev-common}"
+source $DEV_COMMON/bootstrap.sh
+
+import util/namedParameters util/type
+
+namespace "make-tarball"
+
+Log::AddOutput "make-tarball" STDERR
+
+main() {
+  [string] baseName
+  [string] buildDir
+  [string] artifactName
+  [string] outdir=.
+
+  string tempDir="/tmp/${baseName}-${RANDOM}"
+
+  Log "Creating temp directory ${tempDir} if it does not exist"
+
+  mkdir -p $tempDir
+
+  string workDir="${tempDir}/${baseName}"
+
+  if [[ -L "${workDir}" ]]; then
+    Log "Unlinking old working directory ${workDir}"
+    unlink $workDir;
+  fi
+
+  Log "Linking target directory ${buildDir} to ${workDir}"
+
+  ln -s "${PWD}/${buildDir}" "${workDir}"
+
+  string tarball="${outdir}/${baseName}.${artifactName}.tar.gz"
+
+  Log "Making tarball ${tarball}"
+
+  tar -C $tempDir -h -czv -f ${tarball} $baseName
+
+  Log "Unlinking ${workDir}"
+
+  Log "Done"
+
+  ls -lh $tarball
+}
+
+ARGS=($@)
+if [[ ${#ARGS[@]} -lt 3 ]]; then
+  echo "Usage: $0 <basename> <directory> <artifact suffix> [outdir=.]"
+else
+  main $@
+fi
+

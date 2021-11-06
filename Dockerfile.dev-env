@@ -1,0 +1,27 @@
+FROM ubuntu:20.04
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
+  libssl1.1 \
+  ca-certificates \
+  curl \
+  git \
+  less \
+  vim \
+  && rm -rf
+
+ARG user=vino
+ARG group=vino
+ARG uid=1000
+ARG gid=1000
+
+RUN useradd ${user} -m --shell $(which bash)
+
+USER ${user}:${group}
+
+COPY --chown=${user}:${group} dev-common /home/${user}/dev-common
+
+COPY dev-env.sh /tmp
+RUN /tmp/dev-env.sh
+
+COPY --chown=${user}:${group} nvm /home/${user}/.nvm
+COPY --chown=${user}:${group} bin/* /home/${user}/dev-common/bin/

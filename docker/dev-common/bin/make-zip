@@ -1,0 +1,40 @@
+#!/bin/env bash
+
+DEV_COMMON="${DEV_COMMON:=$HOME/dev-common}"
+source $DEV_COMMON/bootstrap.sh
+
+import util/namedParameters util/type
+
+namespace "make-zip"
+
+Log::AddOutput "make-zip" STDERR
+
+main() {
+  [string] buildDir
+  [string] artifactName=
+  [string] outdir=.
+
+  string artifact="${artifactName}.zip"
+
+  if [[ -f "${artifact}" ]]; then
+    string bak="${artifactName}.$(date +%s).zip"
+    Log "Moving old ${artifact} to ${bak}"
+    mv $artifact $bak
+  fi
+
+  Log "Zipping ${buildDir}/* into ${outdir}/${artifact}"
+
+  zip -j "${outdir}/${artifact}" $buildDir/*
+
+  Log "Done"
+
+  ls -lh ${outdir}/${artifact}
+}
+
+ARGS=($@)
+if [[ ${#ARGS[@]} -lt 2 ]]; then
+  echo "Usage: $0 <directory> <artifact_name> [outdir=.]"
+else
+  main $@
+fi
+

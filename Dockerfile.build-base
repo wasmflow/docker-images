@@ -6,11 +6,11 @@ ARG uid=1000
 ARG gid=1000
 
 ENV CROSS_DOCKER_IN_DOCKER=true
-ENV RUSTC_WRAPPER=/home/vino/.cargo/bin/sccache
+ENV RUSTC_WRAPPER=/home/${user}/.cargo/bin/sccache
 
 RUN useradd ${user} -m --shell $(which bash)
 
-COPY --chown=${user}:${group} sccache ${RUSTC_WRAPPER}
+COPY --chown=${user}:${group} bin/sccache ${RUSTC_WRAPPER}
 
 COPY linux-base.sh /tmp
 RUN /tmp/linux-base.sh
