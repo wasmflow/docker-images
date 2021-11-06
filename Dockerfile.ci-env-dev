@@ -23,11 +23,13 @@ COPY --chown=${user}:${group} dev-common /home/${user}/dev-common
 
 RUN ln -s /home/${user}/dev-common/bin/* /usr/local/bin
 
+COPY bin/* /usr/local/bin/
+RUN chmod a+x /usr/local/bin/*
+
 USER ${user}:${group}
 
 COPY dev-env.sh /tmp
 RUN /tmp/dev-env.sh
 
 COPY --chown=${user}:${group} nvm /home/${user}/.nvm
-COPY bin/* /usr/local/bin/
 

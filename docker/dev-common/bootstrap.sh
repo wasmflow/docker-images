@@ -22,29 +22,19 @@ function require_env() {
   fi
 }
 
-import util/log util/type util/exception
-
-namespace dotenv
-
-function __debugLogger() {
+function Debug() {
   if [ "${BASH_DEBUG}" != "" ]; then
-    >&2 echo "$(UI.Color.Blue)[D]$(UI.Color.Default) $*"
+    >&2 echo "[D] $*"
   fi
 }
 
-function Debug() {
-  Log "$*"
+function Log() {
+    >&2 echo "[I] $*"
 }
 
-Log::AddOutput dotenv STDERR
-Log::RegisterLogger DEBUG_LOGGER __debugLogger
-Log::AddOutput dotenv/Debug DEBUG_LOGGER
-
-Debug "dotenv loaded"
-
 function writeFile() {
-  [string] fileName
-  [string] contents
+  local fileName=$1
+  local contents=$2
   Debug "Writing file: ${fileName}"
   echo ${contents} >$fileName
 }

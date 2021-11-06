@@ -3,25 +3,19 @@
 DEV_COMMON="${DEV_COMMON:=$HOME/dev-common}"
 source $DEV_COMMON/bootstrap.sh
 
-import util/namedParameters util/type
-
-namespace "make-tarball"
-
-Log::AddOutput "make-tarball" STDERR
-
 main() {
-  [string] baseName
-  [string] buildDir
-  [string] artifactName
-  [string] outdir=.
+  baseName=$1
+  buildDir=$2
+  artifactName=$3
+  outdir=$4
 
-  string tempDir="/tmp/${baseName}-${RANDOM}"
+  local tempDir="/tmp/${baseName}-${RANDOM}"
 
   Log "Creating temp directory ${tempDir} if it does not exist"
 
   mkdir -p $tempDir
 
-  string workDir="${tempDir}/${baseName}"
+  local workDir="${tempDir}/${baseName}"
 
   if [[ -L "${workDir}" ]]; then
     Log "Unlinking old working directory ${workDir}"
@@ -32,7 +26,7 @@ main() {
 
   ln -s "${PWD}/${buildDir}" "${workDir}"
 
-  string tarball="${outdir}/${baseName}.${artifactName}.tar.gz"
+  local tarball="${outdir}/${baseName}.${artifactName}.tar.gz"
 
   Log "Making tarball ${tarball}"
 
@@ -45,8 +39,7 @@ main() {
   ls -lh $tarball
 }
 
-ARGS=($@)
-if [[ ${#ARGS[@]} -lt 3 ]]; then
+if [[ $# -lt 3 ]]; then
   echo "Usage: $0 <basename> <directory> <artifact suffix> [outdir=.]"
 else
   main $@
