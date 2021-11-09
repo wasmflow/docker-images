@@ -6,11 +6,8 @@ ARG uid=1000
 ARG gid=1000
 
 ENV CROSS_DOCKER_IN_DOCKER=true
-ENV RUSTC_WRAPPER=/home/${user}/.cargo/bin/sccache
 
 RUN useradd ${user} -m --shell $(which bash)
-
-COPY --chown=${user}:${group} bin/sccache ${RUSTC_WRAPPER}
 
 COPY linux-base.sh /tmp
 RUN /tmp/linux-base.sh
@@ -19,6 +16,14 @@ USER ${user}:${group}
 
 COPY --chown=${user}:${group} nvm /home/${user}/.nvm
 
-COPY vino-base.sh /tmp
-RUN /tmp/vino-base.sh
+COPY rust-base.sh /tmp
+RUN cd $HOME && /tmp/rust-base.sh
 
+ENV RUSTC_WRAPPER=${CARGO_HOME}/bin/sccache
+COPY --chown=${user}:${group} bin/sccache ${RUSTC_WRAPPER}
+
+COPY node-base.sh /tmp
+RUN cd $HOME && /tmp/node-base.sh
+
+COPY npm-deps.sh /tmp
+RUN cd $HOME && /tmp/npm-deps.sh

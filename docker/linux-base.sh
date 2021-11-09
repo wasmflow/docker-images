@@ -40,7 +40,12 @@ get_docker_key() {
   $VERSION_CODENAME stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
 }
 
+setup_rcfiles() {
+  echo '[ -s "$HOME/.bashrc" ] && . "$HOME/.bashrc"' >> "$HOME/.bash_profile"
+}
+
 install_deps
 
+setup_rcfiles
 
 rm -rf /var/lib/apt/lists/*
