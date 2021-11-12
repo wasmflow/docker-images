@@ -22,8 +22,12 @@ RUN cd $HOME && /tmp/rust-base.sh
 ENV RUSTC_WRAPPER=${CARGO_HOME}/bin/sccache
 COPY --chown=${user}:${group} bin/sccache ${RUSTC_WRAPPER}
 
+ENV NODE_VERSION=16.13.0
+
 COPY node-base.sh /tmp
 RUN cd $HOME && /tmp/node-base.sh
 
 COPY npm-deps.sh /tmp
 RUN cd $HOME && /tmp/npm-deps.sh
+
+ENV PATH="/home/${user}/.nvm/versions/node/v${NODE_VERSION}/bin:${PATH}"

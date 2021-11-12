@@ -3,7 +3,7 @@
 set -euo pipefail
 
 install_node_deps() {
-  nvm install 16
+  nvm install $NODE_VERSION
 }
 
 setup_rcfiles() {
