@@ -7,7 +7,7 @@ SHELL := bash
 MAKEFLAGS += --warn-undefined-variables
 MAKEFLAGS += --no-builtin-rules
 
-ORG := vinodotdev
+ORG := candlecorp
 RELEASE ?= false
 CROSS_VERSION := 0.2.1
 CROSS_IMAGE:=$(ORG)/cross
@@ -34,6 +34,7 @@ submodules:
 
 .PHONY: Dockerfile.*
 Dockerfile.*: submodules ## Build specific image
+	echo "Building $@"
 	@docker build docker -f $@ -t $(ORG)/$(@:Dockerfile.%=%)
 ifeq ($(RELEASE),true)
 ifeq ($(GIT_STATUS),clean)
@@ -48,6 +49,7 @@ endif
 
 .PHONY: $(ARCHITECTURES)
 $(ARCHITECTURES): ## Build cross image for specific architecture (see `make list`)
+	echo "Building $@"
 	@docker build cross/docker -f cross/docker/Dockerfile.$@ --build-arg VERSION=$(CROSS_VERSION) \
 		-t $(CROSS_IMAGE):$@
 ifeq ($(RELEASE),true)

@@ -10,8 +10,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
   zip \
   && rm -rf
 
-ARG user=vino
-ARG group=vino
+ARG user=candle
+ARG group=candle
 ARG uid=1000
 ARG gid=1000
 
@@ -31,6 +31,8 @@ USER ${user}:${group}
 COPY dev-env.sh /tmp
 RUN /tmp/dev-env.sh
 
+COPY --chown=${user}:${group} nvm /home/${user}/.nvm
+
 ENV NODE_VERSION=16.13.0
 
 COPY node-base.sh /tmp
@@ -39,5 +41,4 @@ RUN cd $HOME && /tmp/node-base.sh
 COPY npm-deps.sh /tmp
 RUN cd $HOME && /tmp/npm-deps.sh
 
-COPY --chown=${user}:${group} nvm /home/${user}/.nvm
 
