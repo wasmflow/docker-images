@@ -1,6 +1,6 @@
 [submodule "cross"]
-	path = cross
-	url = git@github.com:vinodotdev/cross.git
+path = cross
+url = git@github.com:wasmflow/cross.git
 [submodule "docker/nvm"]
-	path = docker/nvm
-	url = git@github.com:nvm-sh/nvm.git
+path = docker/nvm
+url = git@github.com:nvm-sh/nvm.git

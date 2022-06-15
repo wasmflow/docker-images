@@ -28,12 +28,12 @@ GIT_STATUS:=$(shell git diff --quiet && echo clean || echo dirty)
 .PHONY: all
 all: Dockerfile.* $(ARCHITECTURES)
 
-.PHONY: cross
-cross:
+.PHONY: submodules
+submodules:
 	git submodule update
 
 .PHONY: Dockerfile.*
-Dockerfile.*: cross ## Build specific image
+Dockerfile.*: submodules ## Build specific image
 	@docker build docker -f $@ -t $(ORG)/$(@:Dockerfile.%=%)
 ifeq ($(RELEASE),true)
 ifeq ($(GIT_STATUS),clean)
