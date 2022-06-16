@@ -55,6 +55,9 @@ ifeq ($(RELEASE),true)
 		docker push $(CROSS_IMAGE):$@
 endif
 
+.PHONY: cross
+cross: $(ARCHITECTURES) ## Build all cross-compilation images
+
 ##@ Helpers
 
 .PHONY: list
