@@ -10,6 +10,8 @@ install_deps() {
       docker-ce
       docker-ce-cli
       containerd.io
+      jq
+      cmake
     )
 
     apt-get update
