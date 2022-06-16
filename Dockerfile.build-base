@@ -33,4 +33,4 @@ RUN cd $HOME && /tmp/node-base.sh
 COPY npm-deps.sh /tmp
 RUN cd $HOME && /tmp/npm-deps.sh
 
-ENV PATH="/home/${user}/.nvm/versions/node/v${NODE_VERSION}/bin:${PATH}"
+ENV PATH="/home/${user}/.nvm/versions/node/v${NODE_VERSION}/bin:~/bin:${PATH}"
