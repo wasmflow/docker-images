@@ -3,7 +3,7 @@
 set -euo pipefail
 
 install_npm_deps() {
-  npm install -g widl-template prettier ts-node
+  npm install -g apex-template prettier ts-node
 }
 
 setup_rcfiles() {
