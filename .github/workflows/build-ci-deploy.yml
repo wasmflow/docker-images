@@ -1,4 +1,4 @@
-name: Build CI image
+name: Build CI deploy image
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
     paths:
       - "Dockerfile.ci-deploy"
       - docker/*
+      - .github/workflows/build-ci-deploy.yml
 
 jobs:
   docker:
