@@ -3,11 +3,13 @@
 set -euo pipefail
 
 install_rust_deps() {
+  rustup update
+  rustup toolchain add nightly
+  rustup +nightly update
   rustup component add rustfmt clippy
   rustup target add wasm32-unknown-unknown wasm32-wasi
   cargo install tomlq cargo-deny
   cargo install --git https://github.com/wasmflow/cross.git --branch darwin
-  rustup toolchain add nightly
   rustup +nightly component add rustfmt
 }
 
