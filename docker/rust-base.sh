@@ -8,7 +8,7 @@ install_rust_deps() {
   rustup +nightly update
   rustup component add rustfmt clippy
   rustup target add wasm32-unknown-unknown wasm32-wasi
-  cargo install tomlq cargo-deny
+  cargo install tomlq cargo-deny just
   cargo install --git https://github.com/wasmflow/cross.git --branch darwin
   rustup +nightly component add rustfmt
 }
