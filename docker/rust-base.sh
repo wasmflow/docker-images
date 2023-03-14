@@ -11,7 +11,6 @@ install_rust_deps() {
   cargo install tomlq cargo-deny just
   cargo install --git https://github.com/wasmflow/cross.git --branch darwin
   rustup +nightly component add rustfmt
-  rustup +nightly target add wasm32-wasi
 }
 
 setup_rcfiles() {
